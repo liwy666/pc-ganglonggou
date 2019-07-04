@@ -54,7 +54,7 @@
         watch: {
             'goods_info': {
                 'handler': function (val) {
-                    this.$emit('update:goods_img_url', val.goods_attribute_img);
+                    this.mit('update:goods_img_url', val.goods_attribute_img);
                 },
                 deep: true,
             }

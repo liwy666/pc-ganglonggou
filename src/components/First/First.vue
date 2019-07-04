@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="banner-box">
-				<img :src="index_ad_list.coupon.ad_img" alt="">
+				<img :src="index_ad_list.coupon.ad_img" alt="" @click="toControl(index_ad_list.coupon)">
 			</div>
 			<!--8件商品区-->
 			<div class="eight-goods-box" v-for="(item) in index_ad_list.eight_goods" :key="item.id">
@@ -130,8 +130,50 @@
 
         },
         methods: {
-            toControl() {
-            }
+            toControl(ad_info) {
+                if (ad_info.ad_type === "商品ID") {
+                    if (ad_info.goods_id != null && ad_info.goods_id !== '' && ad_info.goods_id !== 0) {
+                        let data = this.$router.resolve({
+                                path: '/goods/' + ad_info.goods_id
+                            }
+                        );
+                        window.open(data.href, '_blank');
+                    }
+                } else if (ad_info.ad_type === "分类ID") {
+                    if (ad_info.cat_id != null && ad_info.cat_id !== '' && ad_info.cat_id !== 0) {
+                        let data = this.$router.resolve({
+                            path: '/goodsList',
+                            query: {type: 'cat', cat_id: ad_info.cat_id, keyword: "", back_number: -1}
+                        });
+                        window.open(data.href, '_blank');
+                    }
+                } else if (ad_info.ad_type === "搜索关键词") {
+                    if (ad_info.text != null && ad_info.text !== '') {
+                        let data = this.$router.resolve({
+                            path: 'goodsList',
+                            query: {type: 'search', cat_id: -1, keyword: ad_info.text, back_number: -1}
+                        });
+                        window.open(data.href, '_blank');
+                    }
+                } else if (ad_info.ad_type === "优惠券板块") {
+                    let data = this.$router.resolve({
+                        path: '/couponList'
+                    });
+                    window.open(data.href, '_blank');
+                } else if (ad_info.ad_type === "外链接") {
+                    if (ad_info.text != null && ad_info.text !== '') {
+                        window.open(ad_info.index_url, '_blank');
+                    }
+                } else if (ad_info.ad_type === "内部文章") {
+                    if (ad_info.article_id != null && ad_info.article_id !== '' && ad_info.article_id !== 0) {
+                        let data = this.$router.resolve('/article/' + ad_info.article_id);
+                        window.open(data.href, '_blank');
+                    }
+                } else {
+                    console.log(ad_info.ad_type);
+                    return false;
+                }
+            },
         },
         components: {
             firstNav,//首页导航

@@ -2,7 +2,7 @@
 	<Affix @on-change="affixWatch">
 		<div class="website-hat-main">
 			<div class="base-middle base">
-				<div class="logo-box">
+				<div class="logo-box" @click="toFirst">
 					<img :src="$store.state.img_url+'gl_horizontal_logo.png'" alt="">
 				</div>
 				<div class="button-box">
@@ -15,8 +15,8 @@
 				<div class="login-box">
 					<Avatar icon="ios-person" size="large" v-if="!login_flag"/>
 					<Button type="primary" @click="toLogin" v-if="!login_flag">登录</Button>
-					<div class="user-img" v-if="login_flag"><img :src="user_info.user_img" alt=""></div>
-					<div class="user-name" v-if="login_flag">{{this.user_info.user_name}}</div>
+					<div class="user-img" @click="toHome" v-if="login_flag"><img :src="user_info.user_img" alt=""></div>
+					<div class="user-name" @click="toHome" v-if="login_flag">{{this.user_info.user_name}}</div>
 					<Icon type="ios-log-out" v-if="login_flag" size="16" @click="dialog_flag = true"/>
 				</div>
 			</div>
@@ -34,7 +34,7 @@
 				<div class="detail-item-panel" v-show="panel[i]"
 					@mouseenter="showDetail(i)" ref="itemPanel1" @mouseleave="hideDetail(i)"
 					v-for="(item,i) in classify_list" :key="i">
-					<div class="one-classify" v-for="(item3) in item.children" :key="item3.id">
+					<div class="one-classify" v-for="(item3) in item.children" :key="item3.id" @click="toSearch(item3)">
 						<div class="img"><img :src="item3.img_url" alt=""></div>
 						<div class="name">{{item3.classify_name}}</div>
 					</div>
@@ -80,14 +80,11 @@
                             this.$set(this.$store.state, 'user_info', user_info);
                             this.login_flag = true;
                         } else {
-                            this.$fetch('user_get_user_info', {user_token: this.$store.state.user_token})
+                            this.$store.dispatch('getUserInfo', this.$store.state.user_token)
                                 .then((msg) => {
-                                    if (msg) {
-                                        this.$set(this.$store.state, 'user_info', msg);
-                                        this.login_flag = true;
-                                    }
-                                })
-
+                                    this.login_flag = true;
+                                    localStorage.setItem(key, JSON.stringify(msg));
+                                });
                         }
                     }
                 },
@@ -146,8 +143,8 @@
                 });
                 window.open(data.href, '_blank')
             },
-            affixWatch(flag) {
-                console.log(flag);
+            affixWatch() {
+
             },
             toArticle() {
                 let data = this.$router.resolve({
@@ -157,10 +154,14 @@
             },
             toLogin() {
                 localStorage.setItem('beforeLoginUrl', this.$route.path);// 保存用户进入的url
-                console.log(this.$route.path);
                 this.$router.push('/login');
             },
-
+            toHome() {
+                let data = this.$router.resolve({
+                    path: "/home"
+                });
+                window.open(data.href, '_blank')
+            },
             outLogin() {
                 let key = 'gl_user_info_' + this.$MyCommon.dateFtt('yyyy_MM_dd', new Date());
                 localStorage.setItem(key, 'null');
@@ -172,6 +173,26 @@
                     title: '注销成功！',
                     desc: ''
                 });
+            },
+
+            toSearch(info) {
+                let key_word = '';
+                if (info.key_word !== '' && info.key_word != null) {
+                    key_word = info.key_word;
+                } else {
+                    key_word = info.classify_name;
+                }
+                key_word = key_word.toUpperCase();
+                key_word = key_word.replace(/\s*/g, "");
+                let data =  this.$router.resolve({
+                    path: 'goodsList', query: {
+                        type: 'search',
+                        cat_id: -1,
+                        keyword: key_word,
+                        back_number: -1,
+                    }
+                });
+                window.open(data.href,'_blank');
             },
 
             showDetail(index) {
@@ -237,17 +258,17 @@
 		background-color: white;
 		border-bottom: 2px solid rgb(204, 0, 1);
 		box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, .1);
-		z-index: 99999;
-
+		z-index: 999 !important;
 		.base {
 			height: 80px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			z-index: 99999;
 
 			.logo-box {
 				height: 60px;
-
+				cursor: pointer;
 				img {
 					height: 100%;
 				}

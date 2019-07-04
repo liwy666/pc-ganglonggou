@@ -63,11 +63,11 @@
 			</div>
 			<div class="copyright">
 				<p><a
-					href="http://jscainfo.miitbeian.gov.cn/publish/query/indexFirst.action"><span>苏ICP备16051105号</span></a>
+					href="http://www.beian.miit.gov.cn" target="_Blank"><span>苏ICP备16051105号-1</span></a>
 				</p>
 			</div>
 			<div class="copyright">
-				<p>Copyright © 2019 by<a href="http://ganglonghui.com/"><span>江苏岗隆数码科技有限公司</span></a></p>
+				<p>Copyright © 2019 by<a href="http://ganglonghui.com/" target="_Blank"><span>江苏岗隆数码科技有限公司</span></a></p>
 			</div>
 		</footer>
 	</div>

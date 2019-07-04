@@ -11,25 +11,25 @@
 			</div>
 			<div class="swipe-box">
 				<div class="swipe">
-					<Carousel autoplay v-model="swipe_number" loop>
-						<CarouselItem   v-for="(item) in swipe_list" :key="item.id">
+					<Carousel autoplay v-model="swipe_number" loop :autoplay-speed="4000">
+						<CarouselItem v-for="(item) in swipe_list" :key="item.id">
 							<div class="on-swipe">
-								<img :src="item.ad_img" alt="">
+								<img :src="item.ad_img" alt="" @click="toControl(item)">
 							</div>
 						</CarouselItem>
 					</Carousel>
 				</div>
 				<div class="coupon-box">
-					<img :src="banner_info.ad_img" alt="">
-<!--					<div class="coupon"><img :src="coupon_info.ad_img" alt=""></div>-->
-<!--					<div class="coupon"><img :src="banner_info.ad_img" alt=""></div>-->
+					<img :src="banner_info.ad_img" @click="toControl(banner_info)" alt="">
+					<!--					<div class="coupon"><img :src="coupon_info.ad_img" alt=""></div>-->
+					<!--					<div class="coupon"><img :src="banner_info.ad_img" alt=""></div>-->
 				</div>
 			</div>
 			<transition-group tag="div" name="fade">
 				<div class="detail-item-panel" v-show="panel[i]"
 					@mouseenter="showDetail(i)" ref="itemPanel1" @mouseleave="hideDetail(i)"
 					v-for="(item,i) in classify_list" :key="i">
-					<div class="one-classify" v-for="(item3) in item.children" :key="item3.id">
+					<div class="one-classify" v-for="(item3) in item.children" :key="item3.id" @click="toSearch(item3)">
 						<div class="img"><img :src="item3.img_url" alt=""></div>
 						<div class="name">{{item3.classify_name}}</div>
 					</div>
@@ -47,8 +47,8 @@
         },
         props: {
             swipe_list: Array,
-			coupon_info:Object,
-            banner_info:Object,
+            coupon_info: Object,
+            banner_info: Object,
         },
         computed: {
             classify_list: {
@@ -91,6 +91,72 @@
                 this.$set(this.panel, index, false);
                 this.$forceUpdate();
             },
+
+            toControl(ad_info) {
+                if (ad_info.ad_type === "商品ID") {
+                    if (ad_info.goods_id != null && ad_info.goods_id !== '' && ad_info.goods_id !== 0) {
+                        let data = this.$router.resolve({
+                                path: '/goods/' + ad_info.goods_id
+                            }
+                        );
+                        window.open(data.href, '_blank');
+                    }
+                } else if (ad_info.ad_type === "分类ID") {
+                    if (ad_info.cat_id != null && ad_info.cat_id !== '' && ad_info.cat_id !== 0) {
+                        let data = this.$router.resolve({
+                            path: '/goodsList',
+                            query: {type: 'cat', cat_id: ad_info.cat_id, keyword: "", back_number: -1}
+                        });
+                        window.open(data.href, '_blank');
+                    }
+                } else if (ad_info.ad_type === "搜索关键词") {
+                    if (ad_info.text != null && ad_info.text !== '') {
+                        let data = this.$router.resolve({
+                            path: 'goodsList',
+                            query: {type: 'search', cat_id: -1, keyword: ad_info.text, back_number: -1}
+                        });
+                        window.open(data.href, '_blank');
+                    }
+                } else if (ad_info.ad_type === "优惠券板块") {
+                    let data = this.$router.resolve({
+                        path: '/couponList'
+                    });
+                    window.open(data.href, '_blank');
+                } else if (ad_info.ad_type === "外链接") {
+                    if (ad_info.text != null && ad_info.text !== '') {
+                        window.open(ad_info.index_url, '_blank');
+                    }
+                } else if (ad_info.ad_type === "内部文章") {
+                    if (ad_info.article_id != null && ad_info.article_id !== '' && ad_info.article_id !== 0) {
+                        let data = this.$router.resolve('/article/' + ad_info.article_id);
+                        window.open(data.href, '_blank');
+                    }
+                } else {
+                    console.log(ad_info.ad_type);
+                    return false;
+                }
+            },
+
+            toSearch(info) {
+                let key_word = '';
+                if (info.key_word !== '' && info.key_word != null) {
+                    key_word = info.key_word;
+                } else {
+                    key_word = info.classify_name;
+                }
+                key_word = key_word.toUpperCase();
+                key_word = key_word.replace(/\s*/g, "");
+               let data =  this.$router.resolve({
+                    path: 'goodsList', query: {
+                        type: 'search',
+                        cat_id: -1,
+                        keyword: key_word,
+                        back_number: -1,
+                    }
+                });
+                window.open(data.href,'_blank');
+            },
+
             /*树状的算法*/
             getTrees(list, parentId) {
                 let items = {};
@@ -143,6 +209,7 @@
 			height: 485px;
 			display: flex;
 			position: relative;
+
 			.nav-side {
 				width: 200px;
 				height: 100%;
@@ -171,31 +238,38 @@
 					}
 				}
 			}
-			.swipe-box{
+
+			.swipe-box {
 				width: 815px;
 				height: 485px;
 				overflow: hidden;
-				.swipe{
+
+				.swipe {
 					width: 750px;
 					height: 366px;
 					margin: 0 auto;
+					cursor: pointer;
 				}
-				.coupon-box{
+
+				.coupon-box {
 					width: 815px;
 					height: 119px;
 					margin: 0 auto;
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					.coupon{
+
+					.coupon {
 						width: 50%;
-						img{
+
+						img {
 							width: 100%;
 						}
 					}
 
 				}
 			}
+
 			.detail-item-panel {
 				width: 815px;
 				height: 485px;
@@ -207,10 +281,12 @@
 				padding: 10px;
 				left: 200px;
 				overflow: hidden;
+
 				.one-classify {
 					width: 85px;
 					margin-bottom: 10px;
 					cursor: pointer;
+
 					.img {
 						width: 100%;
 						text-align: center;
@@ -233,12 +309,12 @@
 
 	/** 插入过程 **/
 	.fade-enter-active {
-		transition: all 1s;
+		transition: all 0.3s;
 	}
 
 	/** 移除过程 **/
 	.fade-leave-active {
-		transition: all 1s;
+		transition: all 0.3s;
 	}
 
 	/*** 开始插入、移除结束的位置变化 ***/

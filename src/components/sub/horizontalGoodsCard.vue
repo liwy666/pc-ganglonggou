@@ -9,6 +9,9 @@
 		<div class="goods-sku-desc">
 			{{this.goods_sku_desc}}
 		</div>
+		<div class="goods-sku-desc" v-if="goods_number">
+			数量：{{this.goods_number}}
+		</div>
 		<div class="goods-price">
 			￥{{this.goods_price}}
 		</div>
@@ -30,6 +33,11 @@
             goods_stock: Number,
             goods_sku_desc: String,
             goods_img: String,
+            goods_number: Number,
+            to_goods: {
+                type: Boolean,
+                default: true,
+            },
         },
         computed: {},
         created() {
@@ -37,10 +45,13 @@
         },
         methods: {
             toGoods() {
-                let data = this.$router.resolve({
-                    path: '/goods/' + this.goods_id,
-                });
-                window.open(data.href, '_blank')
+                if (this.to_goods) {
+                    let data = this.$router.resolve({
+                        path: '/goods/' + this.goods_id,
+                    });
+                    window.open(data.href, '_blank')
+                }
+
             }
         },
     };
@@ -53,6 +64,7 @@
 		padding: 15px;
 		justify-content: space-around;
 		align-items: center;
+
 		.goods-img {
 			width: 100px;
 			height: 100px;

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {Notice} from 'iview';
+import router from './router';
+import {fetch} from './http'
 
 Vue.use(Vuex);
 
@@ -27,8 +29,13 @@ if (user_token_obj && parseInt(now_time) <= parseInt(user_token_obj.over_time)) 
 export default new Vuex.Store({
     state: {
         ad_list: []
+        //, api_url: "https://test-api.ganglonggou.com"
+        // ,local_url:' http://192.168.0.158:3008/'
+        // , wx_login_url: 'https://mate.ganglonggou.com/wx-test-ganglonggou/#/pcLogin'
+        , api_url: "https://api.ganglonggou.com"
+        , wx_login_url: 'https://mate.ganglonggou.com/wx-ganglonggou/#/pcLogin'
+        ,local_url:'https://www.ganglonggou.com/'
         , img_url: 'https://img-api.ganglonggou.com/'
-        , wx_login_url: 'https://mate.ganglonggou.com/wx-test-ganglonggou/#/pcLogin'
         , user_token: user_token
         , user_info: null
         , out_token_time: 54000000
@@ -65,6 +72,8 @@ export default new Vuex.Store({
         }//单个商品信息
         , carts: carts_//购物车
         , carts_selected: carts_selected_ //选中的购物车
+        , address_list: []
+        ,integral_name:"岗隆积分"
     },
     mutations: {
         /**
@@ -348,6 +357,8 @@ export default new Vuex.Store({
             localStorage.setItem('carts', JSON.stringify(state.carts));
 
         },
+
+
     },
     actions: {
         /**
@@ -385,6 +396,97 @@ export default new Vuex.Store({
             Vue.set(context.state.goods_info, 'integral', parseInt(context.state.goods_info.one_integral * context.state.goods_info.goods_number));
             //积分描述
             Vue.set(context.state.goods_info, 'integral_desc', '购买可得' + parseInt(context.state.goods_info.give_integral) + context.state.integral_name);
+        },
+
+        /**
+         * 获取收货地址
+         * @param context
+         * @param user_token
+         * @returns {Promise<any>}
+         */
+        getAddressList(context, user_token) {
+            return new Promise((resolve, reject) => {
+                fetch('user_get_address', {user_token: user_token})
+                    .then((msg) => {
+                        //因为这里返回的msg可能为[]，所以不能用if(msg)
+                        Vue.set(context.state, 'address_list', msg);
+                        resolve(msg);
+                    }).catch(() => {
+                    reject();
+                })
+            });
+        },
+
+        /**
+         * 获取用户信息
+         * @param context
+         * @param user_token
+         * @returns {Promise<any>}
+         */
+        getUserInfo(context, user_token) {
+            return new Promise((resolve, reject) => {
+                fetch('user_get_user_info', {user_token: user_token})
+                    .then((msg) => {
+                        if (msg) {
+                            Vue.set(context.state, 'user_info', msg);
+                            resolve(msg);
+                        }
+
+                    }).catch(() => {
+                    reject();
+                })
+            });
+        },
+
+        /**
+         * 获取支付列表
+         * @param context
+         * @param user_token
+         * @returns {Promise<any>}
+         */
+        getPaymentList(context, user_token) {
+            return new Promise((resolve, reject) => {
+                fetch('user_get_pay_list', {user_token: user_token})
+                    .then((msg) => {
+                        if (msg) {
+                            resolve(msg);
+                        }
+
+                    }).catch(() => {
+                    reject();
+                })
+            });
+        },
+
+        /**
+         * 获取用户持有优惠券列表
+         * @param context
+         * @param user_token
+         * @returns {Promise<any>}
+         */
+        getUserCouponList(context, user_token){
+            return new Promise((resolve, reject) => {
+                fetch('user_get_coupon_list', {user_token: user_token})
+                    .then((msg) => {
+                        if (msg) {
+                            resolve(msg);
+                        }
+
+                    }).catch(() => {
+                    reject();
+                })
+            });
+        },
+
+        getOrderList(context, user_token){
+            return new Promise((resolve, reject) => {
+                fetch('user_get_all_order', {user_token: user_token})
+                    .then((msg) => {
+                        resolve(msg);
+                    }).catch(() => {
+                    reject();
+                })
+            });
         }
     },
     getters: {
@@ -447,6 +549,37 @@ export default new Vuex.Store({
          */
         , getCartsSelected(state) {
             return state.carts_selected;
+        },
+        /* 返回用户token*/
+        getToken(state) {
+            if (state.user_token) {
+                return state.user_token;
+            } else {
+                localStorage.setItem('beforeLoginUrl', router.app.$route.path);// 保存用户进入的url
+                router.app.$router.push('/login');
+            }
+        },
+
+        /**
+         * 返回默认收货地址
+         * @param state
+         * @returns {string}
+         */
+        getDefaultAddress(state) {
+            let result = null;
+            if (state.address_list.length > 0) {
+                state.address_list.forEach(item => {
+                    if (item.is_default === 1) {
+                        result = item;
+                    }
+                })
+            }
+            return result;
+        },
+
+        getAddressList(state) {
+            return state.address_list;
         }
+
     }
 })

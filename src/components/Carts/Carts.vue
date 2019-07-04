@@ -75,7 +75,9 @@
                     let flag = true;
                     idl_carts_selected.forEach(item => {
                         if (item.cart_is === false) {
-                            this.$toast("选购商品中有失效产品");
+                            this.$Notice.error({
+                                title: '选购商品中有失效产品',
+                            });
                             flag = false;
                         }
                     });
@@ -83,7 +85,9 @@
                         this.$router.push({path: '/writeOrder', query: {is_init: true}});
                     }
                 } else {
-                    this.$toast("还未选中商品哦~~")
+                    this.$Notice.error({
+                        title: '还未选中商品哦~~',
+                    });
                 }
             }
         },

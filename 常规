@@ -46,14 +46,10 @@ get(){
       })
 }
 //post
-   let toast1 = this.$toast.loading({
-                        mask: true,
-                        message: '领取中...',
-                        duration:0
-                    });
-    this.$post('',{user_token:this.$store.getters.getUserToken})
+    this.$Spin.show();
+    this.$post('',{user_token:this.$store.getters.getToken})
         .then((msg)=>{
-              toast1.clear();
+             this.$Spin.hide();
     })
 
 //合并数组
