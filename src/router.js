@@ -6,6 +6,7 @@ Vue.use(Router);
 // 导入对应的路由组件
 import Index from './components/Index.vue'
 import First from './components/First/First'
+import Test from './components/Test/Test'
 import CouponList from './components/CouponList/CouponList'
 import GoodsList from './components/GoodsList/GoodsList'
 import Goods from './components/Goods/Goods'
@@ -29,8 +30,10 @@ export default new Router({
         {path: '/', redirect: '/index'},
         {
             path: '/index', component: Index, children: [
-                {path: '/', redirect: '/first'},
+                //{path: '/', redirect: '/first'},
+                {path: '/', redirect: '/test'},
                 {path: '/first', component: First},
+                {path: '/test', component: Test},
                 {path: '/goodsList', component: GoodsList},
                 {path: '/couponList', component: CouponList},
                 {path: '/goods/:goods_id', component: Goods},

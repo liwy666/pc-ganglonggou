@@ -77,6 +77,10 @@
                 coupons_array = this.formatCoupon(coupons_id_array);//格式化优惠券
                 this.$set(this, 'allow_coupons_list', coupons_array.legal);
             },
+
+
+
+
             /**
              * 1维数组筛选不重复
              * @param arr1

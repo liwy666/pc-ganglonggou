@@ -57,6 +57,8 @@
                         notice_text: {},
                         pop_img_url: '',
                         coupon: {},
+                        align:[],
+                        banner:{},
                         four_goods_banner: [],
                         four_goods_base: [],
                         four_goods: [],

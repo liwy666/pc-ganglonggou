@@ -70,6 +70,8 @@ export default new Vuex.Store({
             integral_desc: '',//积分描述
             by_stages_number: 1//分期期数
         }//单个商品信息
+        , goods_sku_options: []//sku选项
+        , goods_sku: []//单个商品规格
         , carts: carts_//购物车
         , carts_selected: carts_selected_ //选中的购物车
         , address_list: []
@@ -139,9 +141,11 @@ export default new Vuex.Store({
                     item.attribute_value.forEach((item2, i2) => {
                         attribute_value.push({name: item2, xz_flag: i2 === 0 ? true : false})
                     });
+                    console.log(attribute_value);
                     state.goods_sku_options.push({attribute_name: attribute_name, attribute_value: attribute_value});
                 })
             }
+            console.log(state.goods_sku_options);
         },
         /**
          * 切换商品属性
@@ -196,6 +200,7 @@ export default new Vuex.Store({
                     return true
                 }
             });
+
             // 如果最终，循环完毕，得到的 flag 还是 false，则把商品数据直接 push 到 购物车中
             if (!flag) {
                 data.unshift(goods_info)
@@ -208,6 +213,8 @@ export default new Vuex.Store({
                     check_flag = false;
                 }
             });
+
+
             if (check_flag) {
                 state.carts = JSON.parse(JSON.stringify(data));
                 //更新购物车价格

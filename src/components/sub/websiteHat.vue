@@ -135,7 +135,7 @@
                 this.show_classify_flag = !this.show_classify_flag;
             },
             showServer() {
-                window.open('https://p.qiao.baidu.com/cps2/mobileChat?siteId=11040705&userId=24298402&type=1&reqParam=&appId=&referer=', '_blank', 'width=800,height=800')
+                window.open('https://p.qiao.baidu.com/cps/chat?siteId=13713892&userId=24298402', '_blank', 'width=800,height=800')
             },
             toCarts() {
                 let data = this.$router.resolve({
@@ -260,14 +260,13 @@
 		box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, .1);
 		z-index: 999 !important;
 		.base {
-			height: 80px;
+			height: 50px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			z-index: 99999;
-
 			.logo-box {
-				height: 60px;
+				height: 40px;
 				cursor: pointer;
 				img {
 					height: 100%;
@@ -284,8 +283,8 @@
 				}
 
 				.user-img {
-					width: 60px;
-					height: 60px;
+					width: 35px;
+					height: 35px;
 					border-radius: 50%;
 					overflow: hidden;
 
@@ -303,14 +302,17 @@
 			}
 
 			.button-box {
-				margin-left: 200px;
-
+				display: flex;
+				justify-content: flex-start;
+				width: 550px;
 				span {
+					width: 70px;
 					cursor: pointer;
 					transition: all .2s ease;
 					font-size: 14px;
-					margin-left: 10px;
-					margin-right: 10px;
+					text-align: center;
+					/*background-color: #3388bb;*/
+					/*border: #cc0001 solid 1px;*/
 				}
 
 				span:hover {

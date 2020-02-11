@@ -159,7 +159,6 @@
                 //    跳转提交页面
                 this.$router.push('/writeOrder');
             }
-
         },
     };
 </script>

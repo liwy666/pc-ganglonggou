@@ -20,6 +20,16 @@
                 }
             }
             , getInfo() {
+			/*let i = 0;
+                setInterval(() => {
+                    this.$fetch('', {}).then((msg) => {
+                        i++;
+                        console.log(i);
+                        //console.log(msg);
+                    });
+                }, 1);*/
+
+
                 let info = JSON.parse(localStorage.getItem('gl_info') || '[]');
                 //获取当前时间时间戳
                 let now_time = (new Date()).getTime();
@@ -66,7 +76,7 @@
     };
 </script>
 <style lang="scss">
-	#app{
-		background-color: rgb(244,248,251);
+	#app {
+		/*background-color: rgb(244,248,251);*/
 	}
 </style>

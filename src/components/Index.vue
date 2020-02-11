@@ -1,6 +1,6 @@
 <template>
 	<div class="main">
-		<websiteHat></websiteHat>
+<!--		<websiteHat></websiteHat>-->
 		<router-view/>
 		<myFloor></myFloor>
 	</div>

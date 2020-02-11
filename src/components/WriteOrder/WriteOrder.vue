@@ -255,6 +255,8 @@
                         this.coupon_list = msg;
                     })
             },
+
+
             getUserInfo() {
                 this.$store.dispatch('getUserInfo', this.$store.state.user_token)
                     .then((msg) => {
@@ -292,7 +294,8 @@
                     use_integral_number:this.use_integral_number,
                     goods_list: this.goods_list
 				};
-                this.$Spin.show();
+
+                 this.$Spin.show();
                 this.$post('user_submit_order',post_info)
                     .then((msg)=>{
                         if(msg){
@@ -310,7 +313,7 @@
                                 title: '提交订单成功'
                             });
                             //导航到订单查看
-                            this.$router.push('/seeOrder/' + msg);
+                            //this.$router.push('/seeOrder/' + msg);
 						}else {
                             this.$Notice.error({
                                 title: '提交订单失败'
