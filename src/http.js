@@ -4,8 +4,8 @@ import Qs from 'qs'
 // import VueCookies from 'vue-cookies'
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL = 'https://api.ganglonggou.com/api/v1';
-//axios.defaults.baseURL = 'https://test-api.ganglonggou.com/api/v1';
+//axios.defaults.baseURL = 'https://api.ganglonggou.com/api/v1';
+axios.defaults.baseURL = 'https://test-api.ganglonggou.com/api/v1';
 
 
 //http request 拦截器

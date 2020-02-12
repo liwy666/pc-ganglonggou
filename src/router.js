@@ -30,8 +30,8 @@ export default new Router({
         {path: '/', redirect: '/index'},
         {
             path: '/index', component: Index, children: [
-                //{path: '/', redirect: '/first'},
-                {path: '/', redirect: '/test'},
+                {path: '/', redirect: '/first'},
+                //{path: '/', redirect: '/test'},
                 {path: '/first', component: First},
                 {path: '/test', component: Test},
                 {path: '/goodsList', component: GoodsList},

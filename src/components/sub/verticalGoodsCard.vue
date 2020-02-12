@@ -3,7 +3,7 @@
 		<div class="goods-img"><img v-lazy="goods_info.goods_img" alt=""></div>
 		<div class="goods-price-box">
 			<span>￥{{goods_info.shop_price }}</span>
-			<Tag color="error" v-if="parseInt(goods_info.shop_price) > 50">24期免息分期</Tag>
+<!--			<Tag color="error" v-if="parseInt(goods_info.shop_price) > 50">24期免息分期</Tag>-->
 		</div>
 		<div class="goods-name">{{this.goods_info.goods_name}}</div>
 		<div class="supplier-box" v-if="!not_show_supplier">

@@ -29,13 +29,14 @@ if (user_token_obj && parseInt(now_time) <= parseInt(user_token_obj.over_time)) 
 export default new Vuex.Store({
     state: {
         ad_list: []
-        //, api_url: "https://test-api.ganglonggou.com"
-        // ,local_url:' http://192.168.0.158:3008/'
-        // , wx_login_url: 'https://mate.ganglonggou.com/wx-test-ganglonggou/#/pcLogin'
-        , api_url: "https://api.ganglonggou.com"
-        , wx_login_url: 'https://mate.ganglonggou.com/wx-ganglonggou/#/pcLogin'
-        ,local_url:'https://www.ganglonggou.com/'
-        , img_url: 'https://img-api.ganglonggou.com/'
+        , api_url: "https://test-api.ganglonggou.com"
+        ,local_url:' http://192.168.0.158:3008/' //这里自己换成你的本地地址
+        , wx_login_url: 'https://mate.ganglonggou.com/wx-test-ganglonggou/#/pcLogin'
+        , img_url: 'https://test-img-api.ganglonggou.com/'
+        // , api_url: "https://api.ganglonggou.com"
+        // , wx_login_url: 'https://mate.ganglonggou.com/wx-ganglonggou/#/pcLogin'
+        // ,local_url:'https://www.ganglonggou.com/'
+        // , img_url: 'https://img-api.ganglonggou.com/'
         , user_token: user_token
         , user_info: null
         , out_token_time: 54000000

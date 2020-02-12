@@ -1,6 +1,6 @@
 <template>
 	<div class="main">
-<!--		<websiteHat></websiteHat>-->
+		<websiteHat></websiteHat>
 		<router-view/>
 		<myFloor></myFloor>
 	</div>
@@ -24,4 +24,7 @@
     };
 </script>
 <style lang="scss" scoped>
+	.main{
+		background-color: rgb(245,245,245);
+	}
 </style>
